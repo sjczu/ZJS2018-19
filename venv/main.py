@@ -3,6 +3,7 @@ from Scripts.menu import *
 
 oferta = {}
 listaKlienci = []
+klienciZamowienia = []
 budzet = 50000
 
 opcjeMenu = np.array([u'Dodaj lub usuń klienta', u'Wypisz klientów', u'Dodaj lub usuń produkt', u'Wypisz produkt', \
@@ -19,8 +20,7 @@ while True:
             print(listaKlienci, '\n')
             nazwa = input('Nazwa: ')
             id = int(input('ID: '))
-            miast = input('Miasto: ')
-            listaKlienci.append((nazwa, id, miast))
+            listaKlienci.append((nazwa, id))
             print(listaKlienci)
         if wybor == 2:
             print(listaKlienci)
@@ -29,7 +29,7 @@ while True:
             print(listaKlienci)
 
     elif wybor == 2:
-        print(listaKlienci)
+        print(listaKlienci,'\n',klienciZamowienia)
 
     elif wybor == 3:
         wybor = menuPrint(opcjeMenuDod)
@@ -53,17 +53,24 @@ while True:
             wyb = input(u'Kontynuować? t/n')
             while wyb == 't':
                 nr = int(input(u'Numer zamówienia: '))
-                przedmiot = input('Nazwa: ')
-                ilosc = int(input(u'Ilość:'))
-                if przedmiot in oferta:
-                    koszt = 0
-                    cena = oferta[przedmiot]
-                    koszt += (cena*ilosc)
-                    zamowienie[nr] = (przedmiot,ilosc,cena*ilosc)
-                    budzet += koszt
-                    print(zamowienie)
-                if przedmiot not in oferta:
-                    print('Brak przedmiotu na stanie!')
+                klient = input('Nazwa klienta:')
+                klientid = int(input('ID klienta:'))
+                if (klient,klientid) in listaKlienci:
+                    klienciZamowienia.append((klient,nr))
+                    przedmiot = input('Nazwa: ')
+                    ilosc = int(input(u'Ilość:'))
+                    if przedmiot in oferta:
+                        koszt = 0
+                        cena = oferta[przedmiot]
+                        koszt += (cena*ilosc)
+                        zamowienie[nr] = (przedmiot,ilosc,cena*ilosc)
+                        budzet += koszt
+                        print(zamowienie)
+                    else:
+                        print('Brak przedmiotu na stanie!')
+                        pass
+                else:
+                    print('Brak klienta w bazie!')
                     pass
                 wyb = input(u'Kontynuować? t/n')
         if wybor == 2:
